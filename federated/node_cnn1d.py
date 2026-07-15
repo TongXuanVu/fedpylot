@@ -6,6 +6,7 @@ import torch.nn as nn
 from torch.utils.data import TensorDataset, DataLoader
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 import pandas as pd
+sys.path.append('yolov7') # Thêm dòng này để fix lỗi ModuleNotFoundError: No module named 'models'
 from node import Node, Server, Client
 
 # Đường dẫn để nạp model CNN1D từ thư mục FL của bạn
