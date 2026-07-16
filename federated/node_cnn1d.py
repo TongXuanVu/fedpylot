@@ -37,7 +37,7 @@ class ServerCNN1D(Server):
         model = self._ckpt['model'].to(self.device)
         model.eval()
         test_data_path = os.path.join(data, 'global_test_data.pt')
-        data_dict = torch.load(test_data_path, map_location=self.device)
+        data_dict = torch.load(test_data_path, map_location='cpu')
         dataset = TensorDataset(data_dict['x'].float(), data_dict['y'].long())
         dataloader = DataLoader(dataset, batch_size=bsz, shuffle=False)
         
@@ -109,7 +109,7 @@ class ClientCNN1D(Client):
         """Huấn luyện mô hình ngay trong PyTorch thay vì gọi os.system() của YOLOv7."""
         # Tải dữ liệu iov dựa vào rank của client (rank - 1 vì server rank 0)
         data_path = os.path.join(data, 'federated_data', f'client_{self.rank-1}.pt')
-        data_dict = torch.load(data_path, map_location=self.device)
+        data_dict = torch.load(data_path, map_location='cpu') # Load lên CPU để tránh tràn VRAM
         dataset = TensorDataset(data_dict['x'].float(), data_dict['y'].long())
         self.nsamples = len(dataset)
         dataloader = DataLoader(dataset, batch_size=bsz_train, shuffle=True)
